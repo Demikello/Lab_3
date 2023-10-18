@@ -25,8 +25,7 @@ jobs:
     - name: Install dependencies
       run: |
         pip install scikit_learn
-        pip install pandas
-        pip install numpy: |
+        pip install pandas |
 
     - name: Run classification script
       run: python iris_classification.py
