@@ -23,7 +23,10 @@ jobs:
         python-version: 3.8
 
     - name: Install dependencies
-      run: pip install scikit-learn, pandas, numpy
+      run: |
+        pip install scikit_learn
+        pip install pandas
+        pip install numpy: |
 
     - name: Run classification script
       run: python iris_classification.py
