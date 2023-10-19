@@ -30,6 +30,13 @@ jobs:
           pip install numpy
           pip install matplotlib
 
-          cat iris_classification_plt.py >> report.md
-          echo '![](./plot.png "Confusion Matrix")' >> report.md
-          cml comment create report.md
+      - name: Run script and generate report
+        run: |
+          python iris_classification_plt.py > report.txt
+          echo "::set-output name=report::report.txt"
+
+      - name: Upload report
+        uses: actions/upload-artifact@v2
+        with:
+          name: classification_report
+          path: report.txt
