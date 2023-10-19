@@ -31,7 +31,7 @@ jobs:
 
       - name: Run script and generate report
         run: |
-          python script.py > report.txt
+          python iris_classification_plt.py > report.txt
           echo "::set-output name=report::report.txt"
 
       - name: Upload report
