@@ -28,6 +28,7 @@ jobs:
           pip install pandas
           pip install scikit-learn
           pip install numpy
+          pip install matplotlib
 
       - name: Run script and generate report
         run: |
