@@ -30,15 +30,6 @@ jobs:
           pip install numpy
           pip install matplotlib
 
-      - name: Run metrics script
-        run: python iris_classification_plt.py
-      - name: Generate report
-        run: python generate_report.py
-      - name: Commit report changes
-        run: |
-          git config --viterov-vlad@mail.ru
-          git config --Demikello
-          git checkout -b Random_forest_plt
-          git add report.md
-          git commit -m "Auto-generated report"
-          git push origin Random_forest_plt
+          cat iris_classification_plt.py >> report.md
+          echo '![](./plot.png "Confusion Matrix")' >> report.md
+          cml comment create report.md
