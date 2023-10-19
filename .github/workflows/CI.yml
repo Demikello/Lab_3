@@ -3,10 +3,10 @@ name: CI
 on:
   push:
     branches:
-      - main
+      - Random-forest
   pull_request:
     branches:
-      - main
+      - Random-forest
 
 jobs:
   test:
