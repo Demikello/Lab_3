@@ -22,7 +22,7 @@ jobs:
     - name: 'Set Up CML Environment'
       uses: iterative/setup-cml@v1
       env:
-          REPO_TOKEN: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
           
     - name: 'Generate CML Report'
       run: | 
