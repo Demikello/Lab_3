@@ -1,16 +1,15 @@
 name: CML
 on: [push]
 jobs:
-   train-and-report:
-     runs-on: [ubuntu-latest]
-     container: docker://dvcorg/cml-py3:latest
-     steps:
-       - uses: actions/checkout@v2
-       - name: 'Train and Evaluate model'
-         shell: bash
-         env:
-           repo_token: ${{ secrets.GITHUB_TOKEN }}
-         run: |
+  train-and-report:
+    runs-on: ubuntu-latest
+    container: docker://ghcr.io/iterative/cml:0-dvc2-base1
+    steps:
+      - uses: actions/checkout@v3
+      - name: Train model
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
           pip install pandas
           pip install scikit-learn
           pip install numpy
