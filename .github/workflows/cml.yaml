@@ -1,5 +1,4 @@
 name: CML
-
 on:
   pull_request:
     branches: Random_forest_plt
@@ -7,7 +6,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -25,8 +23,7 @@ jobs:
           pip install matplotlib
 
       - name: Run script and generate report
-        run: |
-          python iris_classification_plt.py
+        run:  python iris_classification_plt.py
       
       - name: Upload report as artifact
         uses: actions/upload-artifact@v2
