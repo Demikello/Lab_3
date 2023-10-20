@@ -18,6 +18,7 @@ jobs:
     - name: Run and evaluate model
       env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       run: |
         python iris_classification_plt.py
         echo "## Accuracy" >> report.md
