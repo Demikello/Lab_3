@@ -1,7 +1,9 @@
 name: CML
-
 on:
   push:
+    branches:
+      - Random_forest_plt
+  pull_request:
     branches:
       - Random_forest_plt
 
@@ -10,13 +12,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v2
         with:
-            python-version: 3.8
+          python-version: 3.9
+
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Install dependencies
         run: |
