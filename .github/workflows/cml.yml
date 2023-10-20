@@ -1,40 +1,22 @@
 name: CML
-on:
-  push:
-    branches:
-      - Random_forest_plt
-  pull_request:
-    branches:
-      - Random_forest_plt
-
+on: [push]
 jobs:
-  build:
+  train-and-report:
     runs-on: ubuntu-latest
-
+    container: docker://ghcr.io/iterative/cml:0-dvc2-base1
     steps:
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Install dependencies
+      - uses: actions/checkout@v3
+      - name: Train model
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-            pip install pandas
-            pip install scikit-learn
-            pip install numpy
-            pip install matplotlib
+          pip install pandas
+          pip install scikit-learn
+          pip install numpy
+          pip install matplotlib
+          python iris_classification_plt.py  # generate plot.png
 
-      - name: Install CML
-        run: |
-            curl -s https://cml.dev/install.sh | sh
-
-      - name: Run script and generate report
-        run: python iris_classification_plt.py
-        
-      - name: Comment with metrics and images
-        run: |
-          cml comment create --report-metrics metrics.txt --report-charts images.zip
-          cml send-comment comment.md
+          # Create CML report
+          cat metrics.txt >> report.md
+          echo '![](./plot.png "Confusion Matrix")' >> report.md
+          cml comment create report.md
