@@ -14,7 +14,7 @@ jobs:
           pip install scikit-learn
           pip install numpy
           pip install matplotlib
-          python iris_classification_plt.py.py  # generate plot.png
+          python iris_classification_plt.py  # generate plot.png
 
           # Create CML report
           cat metrics.txt >> report.md
