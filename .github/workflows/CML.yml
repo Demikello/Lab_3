@@ -30,8 +30,20 @@ jobs:
           pip install numpy
           pip install matplotlib
           python iris_classification_plt.py  # generate plot.png
+
+      - name: Run classification metrics script
+        run: python iris_classification_plt.py   
           
-          # Create CML report
-          cat metrics.txt >> report.md
-          echo '![](./plot.png "Confusion Matrix")' >> report.md
-          cml comment create report.md
+      - name: Create report
+        run: |
+          mkdir -p report
+          cp images/*.png report/
+          cp iris_classification_plt.py report/
+          echo "Accuracy: ${{ steps.build.outputs.accuracy }}" >> report/metrics.txt
+          echo "Confusion_matrix: ${{ steps.build.outputs.confusion }}" >> report/metrics.txt
+
+      - name: Upload report
+        uses: actions/upload-artifact@v2
+        with:
+         name: classification_metrics_report
+         path: report
