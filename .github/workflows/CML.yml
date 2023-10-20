@@ -37,7 +37,7 @@ jobs:
       - name: Create report
         run: |
           mkdir -p report
-          cp images/*.png report/
+          cp plot.png report/
           cp iris_classification_plt.py report/
           echo "Accuracy: ${{ steps.build.outputs.accuracy }}" >> report/metrics.txt
           echo "Confusion_matrix: ${{ steps.build.outputs.confusion }}" >> report/metrics.txt
