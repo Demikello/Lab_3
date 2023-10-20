@@ -27,6 +27,10 @@ jobs:
             pip install numpy
             pip install matplotlib
 
+      - name: Install CML
+        run: |
+            curl -s https://cml.dev/install.sh | sh
+
       - name: Run script and generate report
         run: python iris_classification_plt.py
         
