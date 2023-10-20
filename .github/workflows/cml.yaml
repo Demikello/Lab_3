@@ -1,22 +1,36 @@
 name: CML
-on: [push]
+
+on:
+  pull_request:
+    branches: Random_forest_plt
+
 jobs:
-  train-and-report:
+  build:
     runs-on: ubuntu-latest
-    container: docker://dvcorg/cml-py3:latest
+
     steps:
-      - uses: actions/checkout@v3
-      - name: Train model
-        env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
         run: |
           pip install pandas
           pip install scikit-learn
           pip install numpy
           pip install matplotlib
-          python iris_classification_plt.py  # generate plot.png
 
-          # Create CML report
-          cat metrics.txt >> report.md
-          echo '![](./plot.png "Confusion Matrix")' >> report.md
-          cml-send-comment report.md
+      - name: Run script and generate report
+        run: |
+          python iris_classification_plt.py
+      
+
+      - name: Upload report as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Report
+          path: https://github.com/Demikello/Lab_3/pull/4
