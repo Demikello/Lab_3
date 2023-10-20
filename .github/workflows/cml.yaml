@@ -1,21 +1,27 @@
 name: CML
 on:
+  push:
+    branches:
+      - Random_forest_plt
   pull_request:
-    branches: Random_forest_plt
+    branches:
+      - Random_forest_plt
 
-jobs: 
+jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - uses: iterative/setup-cml@v1
-
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: 3.9
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install cml
+        uses: iterative/setup-cml@v1
 
       - name: Install dependencies
         run: |
@@ -23,12 +29,9 @@ jobs:
           pip install scikit-learn
           pip install numpy
           pip install matplotlib
+          python iris_classification_plt.py  # generate plot.png
 
-      - name: Run script and generate report
-        run:  python iris_classification_plt.py
-      
-      - name: Upload report as artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: Report
-          path: path/to/report.html
+          # Create CML report
+          cat metrics.txt >> report.md
+          echo '![](./plot.png "Confusion Matrix")' >> report.md
+          cml comment create report.md
