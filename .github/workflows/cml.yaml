@@ -16,6 +16,8 @@ jobs:
         pip install numpy
         pip install matplotlib
     - name: Run and evaluate model
+      env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         python iris_classification_plt.py
         echo "## Accuracy" >> report.md
