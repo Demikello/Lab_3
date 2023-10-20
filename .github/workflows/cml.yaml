@@ -1,42 +1,25 @@
 name: CML
-on:
-  push:
-    branches:
-      - Random_forest_plt
-  pull_request:
-    branches:
-      - Random_forest_plt
-
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Install cml
-        uses: iterative/setup-cml@v1
-
-      - name: Install dependencies
-        run: |
-          pip install pandas
-          pip install scikit-learn
-          pip install numpy
-          pip install matplotlib
-      - name: Train model and generate confusion matrix
-        run: |
-          python iris_classification_plt.py
-      - name: Generate CML report
-        env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        run: |
-          cat metrics.txt >> report.md
-          echo '![](./plot.png "Confusion Matrix")' >> report.md
-          cml comment create report.md
+    - uses: actions/checkout@v2
+    - uses: iterative/setup-cml@v1
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: |
+        pip install pandas
+        pip install scikit-learn
+        pip install numpy
+        pip install matplotlib
+    - name: Run and evaluate model
+      run: |
+        python iris_classification_plt.py
+        echo "## Accuracy" >> report.md
+        echo "$(cat metrics.txt)" >> report.md
+        echo "## Confusion Matrix" >> report.md
+        cml-publish plot.png --md >> report.md
+        cml-send-comment report.md
