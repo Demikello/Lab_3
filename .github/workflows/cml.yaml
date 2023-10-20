@@ -1,33 +1,23 @@
 name: CML
-
 on: [push]
-
 jobs:
-  build:
-    runs-on: [ubuntu-latest]
+   train-and-report:
+     runs-on: [ubuntu-latest]
+     container: docker://dvcorg/cml-py3:latest
+     steps:
+       - uses: actions/checkout@v2
+       - name: 'Train and Evaluate model'
+         shell: bash
+         env:
+           repo_token: ${{ secrets.GITHUB_TOKEN }}
+         run: |
+          pip install pandas
+          pip install scikit-learn
+          pip install numpy
+          pip install matplotlib
+          python iris_classification_plt.py.py  # generate plot.png
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-
-    - name: Install dependencies
-      run: |
-        pip install pandas
-        pip install scikit-learn
-        pip install numpy
-        pip install matplotlib
-
-    - name: Run script
-      run: python iris_classification_plt.py
-
-    - name: Create report
-      run: |
-        echo "## Metrics"
-        cat metrics.txt
-        echo "## Confusion matrix"
-        cat plot.png
+          # Create CML report
+          cat metrics.txt >> report.md
+          echo '![](./plot.png "Confusion Matrix")' >> report.md
+          cml comment create report.md
