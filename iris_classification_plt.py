@@ -20,6 +20,9 @@ predictions = clf.predict(X_test)
 accuracy = accuracy_score(y_test, predictions)
 confusion = confusion_matrix(y_test, predictions)
 
+with open("metrics.txt", "w") as outfile:
+    outfile.write("Accuracy: " + str(accuracy) + "\n")
+
 print("Accuracy:", accuracy)
 print("Confusion matrix:")
 print(confusion)
