@@ -21,7 +21,9 @@ jobs:
 
     - name: 'Set Up CML Environment'
       uses: iterative/setup-cml@v1
-
+      env:
+          REPO_TOKEN: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          
     - name: 'Generate CML Report'
       run: | 
         echo "![ConfusionMatrix](plot.png)" >> report.md
