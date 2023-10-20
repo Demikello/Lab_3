@@ -29,6 +29,9 @@ jobs:
           pip install scikit-learn
           pip install numpy
           pip install matplotlib
+          
+      - name: Run classification metrics script
+        run: python iris_classification_plt.py
 
       - name: Create report
         run: |
