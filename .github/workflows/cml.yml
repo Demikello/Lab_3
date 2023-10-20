@@ -13,6 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Install CML
+        run: |
+          curl -s https://install.cml.dev | bash
+          export PATH=/usr/local/bin:$PATH
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
