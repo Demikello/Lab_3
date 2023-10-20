@@ -1,28 +1,47 @@
-name: CML
-on: [push]
+on:
+  push:
+    branches:
+      - Random_forest_plt
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2
-    - uses: iterative/setup-cml@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    - name: Install dependencies
-      run: |
-        pip install pandas
-        pip install scikit-learn
-        pip install numpy
-        pip install matplotlib
-    - name: Run and evaluate model
-      env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      run: |
-        python iris_classification_plt.py
-        echo "## Accuracy" >> report.md
-        echo "$(cat metrics.txt)" >> report.md
-        echo "## Confusion Matrix" >> report.md
-        cml-publish plot.png --md >> report.md
-        cml comment create report.md
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          pip install pandas
+          pip install scikit-learn
+          pip install numpy
+          pip install matplotlib
+
+      - name: Run iris_classification_plt.py
+        run: python iris_classification_plt.py
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Add metrics and images"
+          git push
+
+      - name: Generate CML report
+        uses: actions/checkout@v2
+        with:
+          repository: "cml-actions/report"
+          path: .cml
+        env:
+          CML_REPORT_NAME: "Iris Classification Report"
+          CML_REPORT_TITLE: "Metrics and Confusion Matrix"
+          CML_REPORT_FILES: |
+            plot.png
+          CML_REPORT_STATUS: success
