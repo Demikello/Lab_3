@@ -28,7 +28,6 @@ jobs:
         run: |
           python iris_classification_plt.py
       
-
       - name: Upload report as artifact
         uses: actions/upload-artifact@v2
         with:
