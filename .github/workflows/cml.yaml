@@ -23,8 +23,7 @@ jobs:
       uses: iterative/setup-cml@v1
 
     - name: 'Generate CML Report'
-      run: |
-        echo "## Results" > report.md
+      run: | 
         echo "![ConfusionMatrix](plot.png)" >> report.md
         echo '### Metrics' >> report.md
         cat metrics.txt >> report.md 
