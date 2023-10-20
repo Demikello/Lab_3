@@ -29,9 +29,13 @@ jobs:
           pip install scikit-learn
           pip install numpy
           pip install matplotlib
-          python iris_classification_plt.py  # generate plot.png
-
-          # Create CML report
+      - name: Train model and generate confusion matrix
+        run: |
+          python iris_classification_plt.py
+      - name: Generate CML report
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
           cat metrics.txt >> report.md
           echo '![](./plot.png "Confusion Matrix")' >> report.md
-          cml comment create report.md
+          cml-send-comment report.md
