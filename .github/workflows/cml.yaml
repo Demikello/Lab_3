@@ -29,4 +29,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Report
-          path: https://github.com/Demikello/Lab_3/pull/4
+          path: path/to/report.html
