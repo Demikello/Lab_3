@@ -28,8 +28,8 @@ jobs:
 
       - name: Commit and push changes
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config --local user.email "vietrov-vlad@mail.ru"
+          git config --local user.name "Demikello"
           git add .
           git commit -m "Add metrics and images"
           git push
