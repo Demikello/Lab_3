@@ -22,7 +22,7 @@ jobs:
     - name: 'Set Up CML Environment'
       uses: iterative/setup-cml@v1
       env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
+          REPO_TOKEN: ${{ secrets.Dem070 }}
           
     - name: 'Generate CML Report'
       run: | 
