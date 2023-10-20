@@ -23,5 +23,6 @@ jobs:
         python iris_classification_plt.py
         echo "## Accuracy" >> report.md
         echo "$(cat metrics.txt)" >> report.md
-        echo '![](./plot.png "Confusion Matrix")' >> report.md
+        echo "## Confusion Matrix" >> report.md
+        cml-publish plot.png --md >> report.md
         cml comment create report.md
