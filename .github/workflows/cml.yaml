@@ -1,3 +1,4 @@
+name: CML
 on:
   push:
     branches:
@@ -6,42 +7,26 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: 'Checkout Repository'
+      uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
+    - name: 'Run Python Script for Model Evaluation'
+      run: |
+        pip install pandas
+        pip install scikit-learn
+        pip install numpy
+        pip install matplotlib  
+        python iris_classification_plt.py
 
-      - name: Install dependencies
-        run: |
-          pip install pandas
-          pip install scikit-learn
-          pip install numpy
-          pip install matplotlib
+    - name: 'Set Up CML Environment'
+      uses: iterative/setup-cml@v1
 
-      - name: Run iris_classification_plt.py
-        run: python iris_classification_plt.py
-
-      - name: Commit and push changes
-        run: |
-          git config --local user.email "vietrov-vlad@mail.ru"
-          git config --local user.name "Demikello"
-          git add .
-          git commit -m "Add metrics and images"
-          git push
-
-      - name: Generate CML report
-        uses: actions/checkout@v2
-        with:
-          repository: "cml-actions/report"
-          path: .cml
-        env:
-          CML_REPORT_NAME: "Iris Classification Report"
-          CML_REPORT_TITLE: "Metrics and Confusion Matrix"
-          CML_REPORT_FILES: |
-            plot.png
-          CML_REPORT_STATUS: success
+    - name: 'Generate CML Report'
+      run: |
+        echo "## Results" > report.md
+        echo "![ConfusionMatrix](plot.png)" >> report.md
+        echo '### Metrics' >> report.md
+        cat metrics.txt >> report.md 
+        cml-publish confusion_matrix.png --md >> report.md
+        cml-send-comment report.md
