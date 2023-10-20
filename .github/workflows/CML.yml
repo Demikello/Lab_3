@@ -30,13 +30,16 @@ jobs:
           pip install numpy
           pip install matplotlib
 
-      - name: Run script and generate report
+      - name: Create report
         run: |
-          python iris_classification_plt.py > report.txt
-          echo "::set-output name=report::report.txt"
+          mkdir -p report
+          cp images/*.png report/
+          cp iris_classification_plt.py report/
+          echo "Accuracy: ${{ steps.build.outputs.accuracy }}" >> report/metrics.txt
+          echo "Confusion matrix: ${{ steps.build.outputs.confusion  }}" >> report/metrics.txt
 
       - name: Upload report
         uses: actions/upload-artifact@v2
         with:
-          name: classification_report
-          path: report.txt
+          name: classification_metrics_report
+          path: report
