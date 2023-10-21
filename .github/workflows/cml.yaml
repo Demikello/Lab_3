@@ -1,0 +1,23 @@
+name: CML
+on: [push]
+jobs:
+  run:
+    runs-on: [ubuntu-latest]
+    container: docker://dvcorg/cml-py3:latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: iterative/setup-cml@v1
+      - name: 'Train the model'
+        env:
+          repo_token: ${{ secrets.Dem070 }}
+        run: |
+          # Your ML workflow goes here
+          pip install pandas
+          pip install scikit-learn
+          pip install numpy
+          pip install matplotlib
+          python iris_classification_plt.py
+
+          cat metrics.txt >> report.md
+          echo '![](./plot.png "Confusion Matrix")' >> report.md
+          cml comment create report.md
