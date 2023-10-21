@@ -9,7 +9,7 @@ jobs:
       - uses: iterative/setup-cml@v1
       - name: 'Train the model'
         env:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{ secrets.Dem070 }}
         run: |
           # Your ML workflow goes here
           pip install pandas
