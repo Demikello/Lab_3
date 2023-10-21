@@ -13,5 +13,10 @@ jobs:
           pip install -r requirements.txt
           python train.py  # generate plot.png
 
-          echo "MODEL METRICS"
-          cat metrics.txt |
+          echo "## Model metrics" > report.md
+          cat metrics.txt >> report.md
+
+          echo "## Data viz" >> report.md
+          cml-publish plot.png --md >> reporn.md
+
+          cmk-send-comment report.md
