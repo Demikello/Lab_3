@@ -1,33 +1,28 @@
 name: CML
-on:
-  push:
-    branches:
-      - Random_forest_plt
-
+on: [push]
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  run:
+    runs-on: [ubuntu-latest]
+    container: docker://dvcorg/cml-py3:latest
     steps:
-    - name: 'Checkout Repository'
-      uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - name: 'Train the model'
+        env:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Your ML workflow goes here
+          pip install pandas
+          pip install scikit-learn
+          pip install numpy
+          pip install matplotlib
+          python iris_classification_plt.py
 
-    - name: 'Run Python Script for Model Evaluation'
-      run: |
-        pip install pandas
-        pip install scikit-learn
-        pip install numpy
-        pip install matplotlib  
-        python iris_classification_plt.py
+          echo "## Model Metrics" > report.md
+          cat metrics.txt >> report.md
 
-    - name: 'Set Up CML Environment'
-      uses: iterative/setup-cml@v1
-          
-    - name: 'Generate CML Report'
-      env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: | 
-        echo "![ConfusionMatrix](plot.png)" >> report.md
-        echo '### Metrics' >> report.md
-        cat metrics.txt >> report.md 
-        cml-publish plot.png --md >> report.md
-        cml-send-comment report.md
+          echo "\n## Model Performance" >> report.md
+          echo "Model performance metrics are on the plot below." >> report.md
+
+          cml-publish plot.png --md >> report.md
+
+          cml-send-comment report.md
