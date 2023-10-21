@@ -17,12 +17,6 @@ jobs:
           pip install matplotlib
           python iris_classification_plt.py
 
-          echo "## Model Metrics" > report.md
           cat metrics.txt >> report.md
-
-          echo "\n## Model Performance" >> report.md
-          echo "Model performance metrics are on the plot below." >> report.md
-
-          cml-publish plot.png --md >> report.md
-
-          cml-send-comment report.md
+          echo '![](./plot.png "Confusion Matrix")' >> report.md
+          cml comment create report.md
